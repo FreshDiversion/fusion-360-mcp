@@ -1,0 +1,12 @@
+{
+  "autodeskProduct": "Fusion",
+  "type": "addin",
+  "id": "FusionMCP-001",
+  "author": "Fusion 360 MCP",
+  "description": {
+    "": "MCP bridge add-in for Fusion 360. Runs a TCP server that accepts JSON-RPC 2.0 commands from the MCP server and executes them on the Fusion 360 API main thread."
+  },
+  "version": "0.1.0",
+  "runOnStartup": false,
+  "supportedOS": "windows|mac"
+}
