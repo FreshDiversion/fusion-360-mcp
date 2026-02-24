@@ -4,7 +4,7 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { FusionBridge } from "./bridge.js";
-import { ToolRegistry, registerAllTools } from "./tools/index.js";
+import { ToolRegistry, registerAllTools, parseEnabledCategories } from "./tools/index.js";
 
 export function createServer(): { server: Server; bridge: FusionBridge } {
   const bridge = new FusionBridge(
@@ -13,8 +13,14 @@ export function createServer(): { server: Server; bridge: FusionBridge } {
     parseInt(process.env.FUSION_TIMEOUT || "30000", 10)
   );
 
+  const enabledCategories = parseEnabledCategories(process.env.FUSION_TOOLS);
   const registry = new ToolRegistry();
-  registerAllTools(registry, bridge);
+  registerAllTools(registry, bridge, enabledCategories);
+
+  console.error(
+    `[fusion-360-mcp] Enabled tool categories: ${Array.from(enabledCategories).join(", ")} ` +
+    `(${registry.getAll().length} tools)`
+  );
 
   const server = new Server(
     {
