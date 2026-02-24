@@ -51,10 +51,10 @@ describe("Tool Registry", () => {
     expect(registry.getAll()).toHaveLength(2);
   });
 
-  it("registerAllTools should register all 65 tools", () => {
+  it("registerAllTools should register all 66 tools", () => {
     registerAllTools(registry, bridge);
     const tools = registry.getAll();
-    expect(tools.length).toBe(65);
+    expect(tools.length).toBe(66);
   });
 
   it("all tools should have required fields", () => {

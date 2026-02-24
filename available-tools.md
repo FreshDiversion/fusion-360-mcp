@@ -1,6 +1,6 @@
 # Available Tools
 
-65 tools across 10 categories.
+66 tools across 10 categories.
 
 ## Document (2)
 
@@ -44,7 +44,7 @@
 | 26 | `create_construction_plane` | Create offset/angle/midplane construction planes |
 | 27 | `create_construction_axis` | Create construction axes |
 
-## Assembly (6)
+## Assembly (7)
 
 | # | Tool | Description |
 |---|------|-------------|
@@ -54,65 +54,66 @@
 | 31 | `get_assembly_info` | Get occurrence tree, joints, grounded status |
 | 32 | `move_component` | Translate/rotate an occurrence |
 | 33 | `check_interference` | Check for body/component interference |
+| 34 | `body_to_component` | Convert a body into its own component |
 
 ## Parameters (3)
 
 | # | Tool | Description |
 |---|------|-------------|
-| 34 | `get_parameters` | List all user parameters |
-| 35 | `set_parameter` | Modify parameter value or expression |
-| 36 | `create_parameter` | Create new user parameter |
+| 35 | `get_parameters` | List all user parameters |
+| 36 | `set_parameter` | Modify parameter value or expression |
+| 37 | `create_parameter` | Create new user parameter |
 
 ## Export/Import (6)
 
 | # | Tool | Description |
 |---|------|-------------|
-| 37 | `export_stl` | Export as STL (configurable refinement) |
-| 38 | `export_step` | Export as STEP |
-| 39 | `export_f3d` | Export as Fusion archive |
-| 40 | `export_iges` | Export as IGES |
-| 41 | `export_dxf` | Export sketch as DXF |
-| 42 | `import_file` | Import file (STEP, IGES, STL, OBJ, etc.) |
+| 38 | `export_stl` | Export as STL (configurable refinement) |
+| 39 | `export_step` | Export as STEP |
+| 40 | `export_f3d` | Export as Fusion archive |
+| 41 | `export_iges` | Export as IGES |
+| 42 | `export_dxf` | Export sketch as DXF |
+| 43 | `import_file` | Import file (STEP, IGES, STL, OBJ, etc.) |
 
 ## CAM (6)
 
 | # | Tool | Description |
 |---|------|-------------|
-| 43 | `create_cam_setup` | Create milling/turning/cutting setup |
-| 44 | `add_cam_operation` | Add machining operation |
-| 45 | `generate_toolpath` | Generate toolpath for operations |
-| 46 | `post_process` | Generate G-code with post processor |
-| 47 | `get_cam_info` | List setups, operations, tools |
-| 48 | `simulate_toolpath` | Run toolpath simulation |
+| 44 | `create_cam_setup` | Create milling/turning/cutting setup |
+| 45 | `add_cam_operation` | Add machining operation |
+| 46 | `generate_toolpath` | Generate toolpath for operations |
+| 47 | `post_process` | Generate G-code with post processor |
+| 48 | `get_cam_info` | List setups, operations, tools |
+| 49 | `simulate_toolpath` | Run toolpath simulation |
 
 ## Analysis (8)
 
 | # | Tool | Description |
 |---|------|-------------|
-| 49 | `measure_distance` | Measure distance between entities |
-| 50 | `measure_angle` | Measure angle between entities |
-| 51 | `get_body_properties` | Volume, area, mass, center of mass, bounding box |
-| 52 | `get_face_info` | Face geometry type, area, normal |
-| 53 | `get_edge_info` | Edge geometry type, length, tangent |
-| 54 | `measure_area` | Measure surface area |
-| 55 | `get_bom` | Extract bill of materials |
-| 56 | `section_analysis` | Create section view at a plane |
+| 50 | `measure_distance` | Measure distance between entities |
+| 51 | `measure_angle` | Measure angle between entities |
+| 52 | `get_body_properties` | Volume, area, mass, center of mass, bounding box |
+| 53 | `get_face_info` | Face geometry type, area, normal |
+| 54 | `get_edge_info` | Edge geometry type, length, tangent |
+| 55 | `measure_area` | Measure surface area |
+| 56 | `get_bom` | Extract bill of materials |
+| 57 | `section_analysis` | Create section view at a plane |
 
 ## Materials (4)
 
 | # | Tool | Description |
 |---|------|-------------|
-| 57 | `set_material` | Apply material to body/component |
-| 58 | `set_appearance` | Apply visual appearance |
-| 59 | `list_materials` | List available materials |
-| 60 | `list_appearances` | List available appearances |
+| 58 | `set_material` | Apply material to body/component |
+| 59 | `set_appearance` | Apply visual appearance |
+| 60 | `list_materials` | List available materials |
+| 61 | `list_appearances` | List available appearances |
 
 ## Utilities (5)
 
 | # | Tool | Description |
 |---|------|-------------|
-| 61 | `capture_viewport` | Capture viewport as PNG |
-| 62 | `set_viewport` | Set camera position/orientation |
-| 63 | `undo` | Undo last operation |
-| 64 | `redo` | Redo last undone operation |
-| 65 | `execute_script` | Execute arbitrary Python in Fusion (escape hatch) |
+| 62 | `capture_viewport` | Capture viewport as PNG |
+| 63 | `set_viewport` | Set camera position/orientation |
+| 64 | `undo` | Undo last operation |
+| 65 | `redo` | Redo last undone operation |
+| 66 | `execute_script` | Execute arbitrary Python in Fusion (escape hatch) |

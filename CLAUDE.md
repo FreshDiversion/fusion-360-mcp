@@ -1,13 +1,13 @@
 # Fusion 360 MCP Server
 
 ## Project Structure
-- `src/` - TypeScript MCP server (65 tools across 10 category modules)
+- `src/` - TypeScript MCP server (66 tools across 10 category modules)
 - `src/tools/index.ts` - Tool registry + category filtering
 - `src/bridge.ts` - TCP socket bridge (FusionBridge class)
 - `fusion-addin/FusionMCP/` - Python Fusion 360 add-in
 - `fusion-addin/FusionMCP/executor.py` - Command executor (~55 cmd_ methods, ~1400 lines)
 - `tests/` - Unit and integration tests (vitest)
-- `available-tools.md` - Full list of all 65 tools by category
+- `available-tools.md` - Full list of all 66 tools by category
 
 ## Commands
 - `npm run build` - Compile TypeScript

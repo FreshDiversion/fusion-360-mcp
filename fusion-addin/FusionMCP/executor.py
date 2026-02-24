@@ -845,6 +845,31 @@ class CommandExecutor:
 
         return {"count": results.count, "interferences": interferences}
 
+    def cmd_body_to_component(self, params):
+        body = self._find_entity(params["bodyToken"])
+        parent_comp = body.parentComponent
+
+        # Create a new empty component under the parent
+        occ = parent_comp.occurrences.addNewComponent(adsk.core.Matrix3D.create())
+        new_comp = occ.component
+
+        # Name the component
+        new_comp.name = params.get("name", body.name)
+
+        # Move the body into the new component
+        move_feats = parent_comp.features.moveFeatures
+        bodies_to_move = adsk.core.ObjectCollection.create()
+        bodies_to_move.add(body)
+        move_input = move_feats.createInput2(bodies_to_move)
+        move_input.defineAsMoveToDifferentComponent(occ)
+        move_feats.add(move_input)
+
+        return {
+            "name": new_comp.name,
+            "entityToken": new_comp.entityToken,
+            "occurrenceToken": occ.entityToken,
+        }
+
     # ── Parameters ───────────────────────────────────────────────────────
 
     def cmd_get_parameters(self, params):

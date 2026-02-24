@@ -97,6 +97,23 @@ export function registerAssemblyTools(registry: ToolRegistry, bridge: FusionBrid
   });
 
   registry.register({
+    name: "body_to_component",
+    description:
+      "Convert an existing body into its own component. This moves the body into a new component, which is useful for organizing multi-body designs for assembly work.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        bodyToken: { type: "string", description: "Entity token of the body to convert into a component" },
+        name: { type: "string", description: "Name for the new component. Defaults to the body name if omitted." },
+      },
+      required: ["bodyToken"],
+    },
+    handler: async (params) => {
+      return bridge.send("body_to_component", params);
+    },
+  });
+
+  registry.register({
     name: "check_interference",
     description:
       "Check for interference (overlapping volumes) between bodies or components. Returns a list of interfering pairs with interference volumes.",
