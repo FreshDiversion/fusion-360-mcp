@@ -53,6 +53,22 @@ export function registerAnalysisTools(registry: ToolRegistry, bridge: FusionBrid
   });
 
   registry.register({
+    name: "get_body_faces",
+    description:
+      "List all faces on a body with their entity tokens and geometry details. Use this to discover faces for joints, measurements, or operations after finding a body via get_design_structure.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        bodyToken: { type: "string", description: "Entity token of the body to enumerate faces for" },
+      },
+      required: ["bodyToken"],
+    },
+    handler: async (params) => {
+      return bridge.send("get_body_faces", params);
+    },
+  });
+
+  registry.register({
     name: "get_face_info",
     description:
       "Get information about a face: geometry type (plane, cylinder, cone, sphere, torus, NURBS), area, centroid, and normal vector (for planar faces).",

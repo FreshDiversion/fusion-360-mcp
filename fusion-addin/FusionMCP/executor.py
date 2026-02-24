@@ -1095,6 +1095,17 @@ class CommandExecutor:
             "materialName": body.material.name if body.material else "None",
         }
 
+    def cmd_get_body_faces(self, params):
+        body = self._find_entity(params["bodyToken"])
+        faces = []
+        for i in range(body.faces.count):
+            faces.append(serialize_face(body.faces.item(i)))
+        return {
+            "bodyName": body.name,
+            "faceCount": body.faces.count,
+            "faces": faces,
+        }
+
     def cmd_get_face_info(self, params):
         face = self._find_entity(params["faceToken"])
         return serialize_face(face)

@@ -1,6 +1,6 @@
 # Available Tools
 
-66 tools across 10 categories.
+67 tools across 10 categories.
 
 ## Document (2)
 
@@ -86,34 +86,35 @@
 | 48 | `get_cam_info` | List setups, operations, tools |
 | 49 | `simulate_toolpath` | Run toolpath simulation |
 
-## Analysis (8)
+## Analysis (9)
 
 | # | Tool | Description |
 |---|------|-------------|
 | 50 | `measure_distance` | Measure distance between entities |
 | 51 | `measure_angle` | Measure angle between entities |
 | 52 | `get_body_properties` | Volume, area, mass, center of mass, bounding box |
-| 53 | `get_face_info` | Face geometry type, area, normal |
-| 54 | `get_edge_info` | Edge geometry type, length, tangent |
-| 55 | `measure_area` | Measure surface area |
-| 56 | `get_bom` | Extract bill of materials |
-| 57 | `section_analysis` | Create section view at a plane |
+| 53 | `get_body_faces` | List all faces on a body with entity tokens and geometry details |
+| 54 | `get_face_info` | Face geometry type, area, normal |
+| 55 | `get_edge_info` | Edge geometry type, length, tangent |
+| 56 | `measure_area` | Measure surface area |
+| 57 | `get_bom` | Extract bill of materials |
+| 58 | `section_analysis` | Create section view at a plane |
 
 ## Materials (4)
 
 | # | Tool | Description |
 |---|------|-------------|
-| 58 | `set_material` | Apply material to body/component |
-| 59 | `set_appearance` | Apply visual appearance |
-| 60 | `list_materials` | List available materials |
-| 61 | `list_appearances` | List available appearances |
+| 59 | `set_material` | Apply material to body/component |
+| 60 | `set_appearance` | Apply visual appearance |
+| 61 | `list_materials` | List available materials |
+| 62 | `list_appearances` | List available appearances |
 
 ## Utilities (5)
 
 | # | Tool | Description |
 |---|------|-------------|
-| 62 | `capture_viewport` | Capture viewport as PNG |
-| 63 | `set_viewport` | Set camera position/orientation |
-| 64 | `undo` | Undo last operation |
-| 65 | `redo` | Redo last undone operation |
-| 66 | `execute_script` | Execute arbitrary Python in Fusion (escape hatch) |
+| 63 | `capture_viewport` | Capture viewport as PNG |
+| 64 | `set_viewport` | Set camera position/orientation |
+| 65 | `undo` | Undo last operation |
+| 66 | `redo` | Redo last undone operation |
+| 67 | `execute_script` | Execute arbitrary Python in Fusion (escape hatch) |
