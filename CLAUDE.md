@@ -5,9 +5,9 @@
 - `src/tools/index.ts` - Tool registry + category filtering
 - `src/bridge.ts` - TCP socket bridge (FusionBridge class)
 - `fusion-addin/FusionMCP/` - Python Fusion 360 add-in
-- `fusion-addin/FusionMCP/executor.py` - Command executor (~55 cmd_ methods, ~1400 lines)
+- `fusion-addin/FusionMCP/executor.py` - Command executor (~73 cmd_ methods, ~1590 lines)
 - `tests/` - Unit and integration tests (vitest)
-- `available-tools.md` - Full list of all 66 tools by category
+- `available-tools.md` - Full list of all 73 tools by category
 
 ## Commands
 - `npm run build` - Compile TypeScript
@@ -29,7 +29,7 @@ Document category is always included regardless of filter.
 - `FUSION_TIMEOUT` - Request timeout ms (default: 30000)
 - `FUSION_TOOLS` - Comma-separated category filter (default: all)
   - Categories: document, sketch, modeling, assembly, parameters, export, cam, analysis, materials, utilities
-  - Example: `FUSION_TOOLS=sketch,modeling,export` → 31 tools instead of 65
+  - Example: `FUSION_TOOLS=sketch,modeling,export` → 35 tools instead of 73
 
 ## Conventions
 - All Fusion 360 measurements in centimeters (internal units)
