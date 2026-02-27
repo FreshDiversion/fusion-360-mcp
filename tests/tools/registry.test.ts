@@ -51,10 +51,10 @@ describe("Tool Registry", () => {
     expect(registry.getAll()).toHaveLength(2);
   });
 
-  it("registerAllTools should register all 67 tools", () => {
+  it("registerAllTools should register all 73 tools", () => {
     registerAllTools(registry, bridge);
     const tools = registry.getAll();
-    expect(tools.length).toBe(67);
+    expect(tools.length).toBe(73);
   });
 
   it("all tools should have required fields", () => {
@@ -128,8 +128,8 @@ describe("Category Filtering", () => {
     const cats = parseEnabledCategories("sketch");
     registerAllTools(registry, bridge, cats);
     const tools = registry.getAll();
-    // document (2) + sketch (10) = 12
-    expect(tools.length).toBe(12);
+    // document (2) + sketch (11) = 13
+    expect(tools.length).toBe(13);
     expect(registry.has("create_sketch")).toBe(true);
     expect(registry.has("get_document_info")).toBe(true);
     expect(registry.has("create_extrude")).toBe(false);
@@ -139,7 +139,7 @@ describe("Category Filtering", () => {
     const cats = parseEnabledCategories("sketch,modeling");
     registerAllTools(registry, bridge, cats);
     const tools = registry.getAll();
-    // document (2) + sketch (10) + modeling (15) = 27
-    expect(tools.length).toBe(27);
+    // document (2) + sketch (11) + modeling (16) = 29
+    expect(tools.length).toBe(29);
   });
 });

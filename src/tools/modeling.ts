@@ -390,6 +390,28 @@ export function registerModelingTools(registry: ToolRegistry, bridge: FusionBrid
   });
 
   registry.register({
+    name: "move_body",
+    description:
+      "Translate and/or rotate a body. Translation values in cm, rotation angles in degrees. Creates a Move feature in the timeline.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        bodyToken: { type: "string", description: "Entity token of the body to move" },
+        translateX: { type: "number", description: "Translation along X axis (cm)", default: 0 },
+        translateY: { type: "number", description: "Translation along Y axis (cm)", default: 0 },
+        translateZ: { type: "number", description: "Translation along Z axis (cm)", default: 0 },
+        rotateX: { type: "number", description: "Rotation around X axis (degrees)", default: 0 },
+        rotateY: { type: "number", description: "Rotation around Y axis (degrees)", default: 0 },
+        rotateZ: { type: "number", description: "Rotation around Z axis (degrees)", default: 0 },
+      },
+      required: ["bodyToken"],
+    },
+    handler: async (params) => {
+      return bridge.send("move_body", params);
+    },
+  });
+
+  registry.register({
     name: "create_construction_axis",
     description:
       "Create a construction axis through edges, points, faces, or along standard directions.",

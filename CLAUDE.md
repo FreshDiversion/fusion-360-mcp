@@ -1,7 +1,7 @@
 # Fusion 360 MCP Server
 
 ## Project Structure
-- `src/` - TypeScript MCP server (66 tools across 10 category modules)
+- `src/` - TypeScript MCP server (73 tools across 10 category modules)
 - `src/tools/index.ts` - Tool registry + category filtering
 - `src/bridge.ts` - TCP socket bridge (FusionBridge class)
 - `fusion-addin/FusionMCP/` - Python Fusion 360 add-in

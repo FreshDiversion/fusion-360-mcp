@@ -282,6 +282,44 @@ class CommandExecutor:
             "expression": dim.parameter.expression,
         }
 
+    def cmd_edit_sketch_dimension(self, params):
+        design = self.design
+        param_name = params.get("parameterName")
+        entity_token = params.get("entityToken")
+
+        if param_name:
+            # Search all parameters (model + user) by name
+            all_params = design.allParameters
+            param = None
+            for i in range(all_params.count):
+                p = all_params.item(i)
+                if p.name == param_name:
+                    param = p
+                    break
+            if not param:
+                raise ValueError(f"Parameter not found: {param_name}")
+        elif entity_token:
+            entity = self._find_entity(entity_token)
+            dim = adsk.fusion.SketchDimension.cast(entity)
+            if not dim:
+                raise ValueError("Entity is not a sketch dimension")
+            param = dim.parameter
+        else:
+            raise ValueError("Either parameterName or entityToken is required")
+
+        if params.get("expression"):
+            param.expression = params["expression"]
+        elif params.get("value") is not None:
+            param.value = params["value"]
+        else:
+            raise ValueError("Either value or expression is required")
+
+        return {
+            "parameterName": param.name,
+            "value": param.value,
+            "expression": param.expression,
+        }
+
     def cmd_get_sketch_info(self, params):
         sketch = self._get_sketch(params["sketchName"])
 
@@ -711,6 +749,44 @@ class CommandExecutor:
         axis = axes.add(axis_input)
         return {"name": axis.name, "entityToken": axis.entityToken}
 
+    def cmd_move_body(self, params):
+        body = self._find_entity(params["bodyToken"])
+        brep_body = adsk.fusion.BRepBody.cast(body)
+        if not brep_body:
+            raise ValueError("Token must refer to a body")
+
+        comp = brep_body.parentComponent
+        bodies = adsk.core.ObjectCollection.create()
+        bodies.add(brep_body)
+
+        # Build transform matrix
+        transform = adsk.core.Matrix3D.create()
+
+        tx = params.get("translateX", 0)
+        ty = params.get("translateY", 0)
+        tz = params.get("translateZ", 0)
+        if tx or ty or tz:
+            transform.translation = adsk.core.Vector3D.create(tx, ty, tz)
+
+        for axis_vec, angle_deg in [
+            (adsk.core.Vector3D.create(1, 0, 0), params.get("rotateX", 0)),
+            (adsk.core.Vector3D.create(0, 1, 0), params.get("rotateY", 0)),
+            (adsk.core.Vector3D.create(0, 0, 1), params.get("rotateZ", 0)),
+        ]:
+            if angle_deg != 0:
+                rotation = adsk.core.Matrix3D.create()
+                rotation.setToRotation(
+                    math.radians(angle_deg), axis_vec, adsk.core.Point3D.create(0, 0, 0)
+                )
+                transform.transformBy(rotation)
+
+        move_feats = comp.features.moveFeatures
+        move_input = move_feats.createInput2(bodies)
+        move_input.defineAsFreeMove(transform)
+        move_feats.add(move_input)
+
+        return {"success": True}
+
     # ── Assembly ─────────────────────────────────────────────────────────
 
     def cmd_create_component(self, params):
@@ -796,7 +872,13 @@ class CommandExecutor:
         }
 
     def cmd_move_component(self, params):
-        occ = self._find_entity(params["occurrenceToken"])
+        entity = self._find_entity(params["occurrenceToken"])
+        occ = adsk.fusion.Occurrence.cast(entity)
+        if not occ:
+            raise ValueError(
+                "Token does not refer to an occurrence. "
+                "Use an occurrence entity token (from get_design_structure or get_assembly_info), not a component token."
+            )
         transform = occ.transform
 
         # Apply translation
@@ -856,18 +938,84 @@ class CommandExecutor:
         # Name the component
         new_comp.name = params.get("name", body.name)
 
-        # Move the body into the new component
-        move_feats = parent_comp.features.moveFeatures
+        # Move the body into the new component via cut/paste
         bodies_to_move = adsk.core.ObjectCollection.create()
         bodies_to_move.add(body)
-        move_input = move_feats.createInput2(bodies_to_move)
-        move_input.defineAsMoveToDifferentComponent(occ)
-        move_feats.add(move_input)
+        parent_comp.features.cutPasteBodies.add(bodies_to_move, occ)
 
         return {
             "name": new_comp.name,
             "entityToken": new_comp.entityToken,
             "occurrenceToken": occ.entityToken,
+        }
+
+    def cmd_set_ground(self, params):
+        entity = self._find_entity(params["occurrenceToken"])
+        occ = adsk.fusion.Occurrence.cast(entity)
+        if not occ:
+            raise ValueError(
+                "Token does not refer to an occurrence. "
+                "Use an occurrence entity token, not a component token."
+            )
+        grounded = params.get("grounded", True)
+        occ.isGrounded = grounded
+        return {
+            "success": True,
+            "name": occ.name,
+            "isGrounded": occ.isGrounded,
+        }
+
+    def cmd_rename_body(self, params):
+        entity = self._find_entity(params["bodyToken"])
+        brep_body = adsk.fusion.BRepBody.cast(entity)
+        if not brep_body:
+            raise ValueError("Token must refer to a body")
+        old_name = brep_body.name
+        brep_body.name = params["name"]
+        return {
+            "oldName": old_name,
+            "newName": brep_body.name,
+            "entityToken": brep_body.entityToken,
+        }
+
+    def cmd_rename_component(self, params):
+        entity = self._find_entity(params["entityToken"])
+        comp = adsk.fusion.Component.cast(entity)
+        if not comp:
+            # May be an occurrence — get its component
+            occ = adsk.fusion.Occurrence.cast(entity)
+            if occ:
+                comp = occ.component
+        if not comp:
+            raise ValueError("Token must refer to a component or occurrence")
+        old_name = comp.name
+        comp.name = params["name"]
+        return {
+            "oldName": old_name,
+            "newName": comp.name,
+            "entityToken": comp.entityToken,
+        }
+
+    def cmd_copy_component(self, params):
+        entity = self._find_entity(params["occurrenceToken"])
+        source_occ = adsk.fusion.Occurrence.cast(entity)
+        if not source_occ:
+            raise ValueError(
+                "Token does not refer to an occurrence. "
+                "Use an occurrence entity token, not a component token."
+            )
+        parent_comp = source_occ.parentComponent
+        source_comp = source_occ.component
+
+        # Create a new instance of the same component definition
+        transform = adsk.core.Matrix3D.create()
+        new_occ = parent_comp.occurrences.addExistingComponent(source_comp, transform)
+
+        return {
+            "name": new_occ.component.name,
+            "entityToken": new_occ.component.entityToken,
+            "occurrenceToken": new_occ.entityToken,
+            "isLinkedCopy": True,
         }
 
     # ── Parameters ───────────────────────────────────────────────────────

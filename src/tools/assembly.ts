@@ -114,6 +114,73 @@ export function registerAssemblyTools(registry: ToolRegistry, bridge: FusionBrid
   });
 
   registry.register({
+    name: "set_ground",
+    description:
+      "Ground or unground a component occurrence. A grounded component is fixed in place and cannot be moved by joints or dragging.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        occurrenceToken: { type: "string", description: "Entity token of the occurrence to ground/unground" },
+        grounded: { type: "boolean", description: "True to ground, false to unground", default: true },
+      },
+      required: ["occurrenceToken"],
+    },
+    handler: async (params) => {
+      return bridge.send("set_ground", params);
+    },
+  });
+
+  registry.register({
+    name: "rename_body",
+    description:
+      "Rename an existing body in the design.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        bodyToken: { type: "string", description: "Entity token of the body to rename" },
+        name: { type: "string", description: "New name for the body" },
+      },
+      required: ["bodyToken", "name"],
+    },
+    handler: async (params) => {
+      return bridge.send("rename_body", params);
+    },
+  });
+
+  registry.register({
+    name: "rename_component",
+    description:
+      "Rename an existing component. Accepts either a component or occurrence entity token.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        entityToken: { type: "string", description: "Entity token of the component or occurrence to rename" },
+        name: { type: "string", description: "New name for the component" },
+      },
+      required: ["entityToken", "name"],
+    },
+    handler: async (params) => {
+      return bridge.send("rename_component", params);
+    },
+  });
+
+  registry.register({
+    name: "copy_component",
+    description:
+      "Create a copy of a component occurrence. Creates a linked instance (same component definition). The copy is placed at the origin — use move_component to position it.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        occurrenceToken: { type: "string", description: "Entity token of the occurrence to copy" },
+      },
+      required: ["occurrenceToken"],
+    },
+    handler: async (params) => {
+      return bridge.send("copy_component", params);
+    },
+  });
+
+  registry.register({
     name: "check_interference",
     description:
       "Check for interference (overlapping volumes) between bodies or components. Returns a list of interfering pairs with interference volumes.",

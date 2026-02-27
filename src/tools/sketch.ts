@@ -249,6 +249,25 @@ export function registerSketchTools(registry: ToolRegistry, bridge: FusionBridge
   });
 
   registry.register({
+    name: "edit_sketch_dimension",
+    description:
+      "Modify an existing sketch dimension by its parameter name (e.g., 'd1', 'd2') or entity token. Use this to change dimension values after they've been created.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        parameterName: { type: "string", description: "Parameter name of the dimension (e.g., 'd1', 'd2'). Find these via add_sketch_dimension or get_sketch_info." },
+        entityToken: { type: "string", description: "Entity token of the sketch dimension (alternative to parameterName)" },
+        value: { type: "number", description: "New dimension value (cm for linear, degrees for angular)" },
+        expression: { type: "string", description: "Expression string (e.g., 'width * 2'). Overrides value if provided." },
+      },
+      required: [],
+    },
+    handler: async (params) => {
+      return bridge.send("edit_sketch_dimension", params);
+    },
+  });
+
+  registry.register({
     name: "get_sketch_info",
     description:
       "Get detailed information about a sketch including its profiles, curves, constraints, and whether it is fully constrained.",
